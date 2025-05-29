@@ -59,21 +59,21 @@ object juego {
     }
 
     // para que un enemigo mate al jugador al tocarlo
-    game.onCollideDo(jugador, { enemigo =>
-      enemigo.matarJugador()
+    game.onCollideDo(jugador, { personaje =>
+      if (personaje.tipo() == "Enemigo") {
+      personaje.matarJugador()
       jugador.reiniciarPosicion()
-      game.say(enemigo, "JAJAJAJA...")
-
-    // Por si perdemos
-    if (self.gameOver()) {
-      const gamerOver = new Texto(texto = "GAME OVER", color="FF0000FF")
-      // borro el reiniciar porque no se el comando para reiniciar un
-      // const reiniciar = new Texto(texto = "Pulsa R para reiniciar", color ="#646464", posicion = game.at(7, 3))
-      game.addVisual(gameOver)
-      game.removeVisual(jugador)
-    }
+      game.say(personaje, "JAJAJAJA...")
       }
-    )
+      // Por si perdemos
+      if (self.gameOver()) {
+        const gamerOver = new Texto(texto = "GAME OVER", color="FF0000FF")
+        // borro el reiniciar porque no se el comando para reiniciar un
+        // const reiniciar = new Texto(texto = "Pulsa R para reiniciar", color ="#646464", posicion = game.at(7, 3))
+        game.addVisual(gameOver)
+        game.removeVisual(jugador)
+      }
+    })
   }
 }
 
@@ -173,4 +173,14 @@ object ganaste {
   var property position = game.center()
   var property text= "Ganaste!"
   var property textColor = "00FF00FF"
+}
+
+object prueba {
+  var property position = game.at(0, 6)
+  method text() = "0, 6"
+}
+
+object prueba2 {
+  var property position = game.at(6, 0)
+  method text() = "6, 0"
 }
