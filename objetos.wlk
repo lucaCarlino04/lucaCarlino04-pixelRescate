@@ -1,9 +1,10 @@
 object juego {
   // definimos personajes
-  var personajes = [new Amigo(), new Amigo(), new Amigo(), new Amigo(), new Amigo(), new Amigo(), new Amigo(), new Amigo(),
-                    new Enemigo(), new Enemigo(), new Enemigo(), new Enemigo(), new Enemigo()]
+  var personajes = [new Amigo(), new Amigo(), new Amigo(), new Amigo(),new Amigo(),new Amigo(),new Amigo(),new Amigo(),new Amigo(),
+                    new Enemigo(), new Enemigo(), new Enemigo(), new Enemigo(), new Enemigo(), new Enemigo()]
   var amigos = personajes.filter {personaje => personaje.tipo() == "Amigo"}
   var enemigos = personajes.filter {personaje => personaje.tipo() == "Enemigo"}
+  var nivel = 1
   method amigos() = amigos
   method enemigos() = enemigos
   method personajes() = personajes
@@ -15,8 +16,7 @@ object juego {
     // añadimos la interfaz
     game.addVisual(vidasRestantes)
     game.addVisual(amigosRescatados)
-    game.addVisual(prueba)
-    game.addVisual(prueba2)
+    game.addVisual(puntosConseguidos)
 
     // añadimos personajes
     game.addVisualCharacter(jugador)
@@ -37,6 +37,22 @@ object juego {
           jugador.rescatarAmigo()
     	}
       if (self.ganar()) {
+        // nivel += 1
+        // if (nivel == 2) {
+        //   game.say(jugador, "Nivel 2")
+        //   personajes = [new Amigo(), new Amigo(), new Amigo(), new Amigo(), new Amigo(), new Amigo(),
+        //                 new Enemigo(), new Enemigo()]
+        //   personajes.forEach {personaje => game.addVisual(personaje)}
+        // }
+        // if (nivel == 3) {
+        //   game.say(jugador, "Nivel 3")
+        //   personajes = [new Amigo(), new Amigo(), new Amigo(), new Amigo(), new Amigo(), new Amigo(), new Amigo(), new Amigo(), new Amigo(),
+        //                 new Enemigo(), new Enemigo(), new Enemigo()]
+        // }
+        // if (nivel == 4) {
+        //   game.addVisual(ganaste)
+        //   game.removeVisual(jugador)
+        // }
         game.addVisual(ganaste)
         game.removeVisual(jugador)
       }
@@ -51,18 +67,13 @@ object juego {
     // Por si perdemos
     if (self.gameOver()) {
       const gamerOver = new Texto(texto = "GAME OVER", color="FF0000FF")
-      const reiniciar = new Texto(texto = "Pulsa R para reiniciar", color ="#646464", posicion = game.at(7, 3))
+      // borro el reiniciar porque no se el comando para reiniciar un
+      // const reiniciar = new Texto(texto = "Pulsa R para reiniciar", color ="#646464", posicion = game.at(7, 3))
       game.addVisual(gameOver)
-      game.addVisual(reiniciar)
       game.removeVisual(jugador)
     }
       }
     )
-
-    // para reiniciar
-    keyboard.r().onPressDo {
-      game.start()
-    }
   }
 }
 
@@ -72,15 +83,19 @@ object jugador {
 
   var amigosRescatados = 0
   var vidas = 3
+  var puntos = 0
 
   method amigosRescatados() = amigosRescatados
   method vidas() = vidas
+  method puntos() = puntos
 
   method rescatarAmigo() {
     amigosRescatados += 1
+    puntos += 250
   }
   method morir() {
     vidas = (vidas - 1).max(0)
+    puntos = (puntos - 400).max(0)
   }
   method reiniciarPosicion() {
     position = game.origin()
@@ -142,6 +157,12 @@ object amigosRescatados {
   var property textColor = "#646464"
 }
 
+object puntosConseguidos {
+  var property position = game.at(7, 8)
+  method text() = "Puntos: " + jugador.puntos()
+  var property textColor = "#646464"
+}
+
 object gameOver {
   var property position = game.center()
   var property text= "GAME OVER"
@@ -152,14 +173,4 @@ object ganaste {
   var property position = game.center()
   var property text= "Ganaste!"
   var property textColor = "00FF00FF"
-}
-
-object prueba {
-  var property position = game.at(0, 6)
-  method text() = "0, 6"
-}
-
-object prueba2 {
-  var property position = game.at(6, 0)
-  method text() = "6, 0"
 }
