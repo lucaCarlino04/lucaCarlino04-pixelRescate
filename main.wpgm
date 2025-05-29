@@ -1,0 +1,12 @@
+import wollok.game.*
+
+import objetos.*
+
+program Main {
+	game.title("Pixel Rescate")
+	game.height(9)
+	game.width(15)
+
+	juego.iniciar()
+	game.start()
+}
