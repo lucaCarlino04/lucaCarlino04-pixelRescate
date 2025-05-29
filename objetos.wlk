@@ -4,7 +4,6 @@ object juego {
                     new Enemigo(), new Enemigo(), new Enemigo(), new Enemigo(), new Enemigo(), new Enemigo()]
   var amigos = personajes.filter {personaje => personaje.tipo() == "Amigo"}
   var enemigos = personajes.filter {personaje => personaje.tipo() == "Enemigo"}
-  var nivel = 1
   method amigos() = amigos
   method enemigos() = enemigos
   method personajes() = personajes
